@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELT+ | Ativação e Licenças</title>
+  <style>
+    :root { --bg: #0b0e14; --card: #151b26; --primary: #e50914; --accent: #00d26a; --text: #f1f5f9; --muted: #94a3b8; }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+    .container { width: 100%; max-width: 520px; background: var(--card); border-radius: 14px; padding: 28px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); border: 1px solid #242f42; }
+    h1, h2 { margin-top: 0; text-align: center; }
+    .badge { display: inline-block; background: rgba(229,9,20,0.15); color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+    input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #2e3b52; background: #0f141d; color: #fff; font-size: 15px; text-transform: uppercase; }
+    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+    .plan { border: 2px solid #2e3b52; border-radius: 10px; padding: 14px; cursor: pointer; text-align: center; transition: 0.2s; }
+    .plan.active { border-color: var(--primary); background: rgba(229,9,20,0.1); }
+    .plan strong { display: block; font-size: 16px; }
+    .plan span { font-size: 13px; color: var(--accent); font-weight: 600; }
+    button { width: 100%; padding: 14px; margin-top: 20px; border: none; border-radius: 8px; background: var(--primary); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
+    button.secondary { background: #263247; font-size: 14px; padding: 10px; }
+    .result-box { display: none; margin-top: 20px; padding: 16px; background: #0f141d; border: 1px dashed var(--accent); border-radius: 10px; text-align: center; }
+    .key-display { font-size: 22px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin: 10px 0; user-select: all; }
+    .nav-toggle { margin-top: 24px; font-size: 13px; color: var(--muted); cursor: pointer; text-decoration: underline; }
+    .hidden { display: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 12px; }
+    th, td { padding: 8px; border-bottom: 1px solid #242f42; text-align: left; }
+  </style>
+</head>
+<body>
+
+  <!-- ÁREA PÚBLICA DO CLIENTE -->
+  <div id="public-view" class="container">
+    <div style="text-align:center;"><span class="badge">PORTAL OFICIAL DE ATIVAÇÃO</span></div>
+    <h1>Ativar VELT+</h1>
+    <p style="color:var(--muted); font-size:14px; text-align:center;">Informe o ID do seu aparelho exibido na aba <b>Sobre</b> do aplicativo.</p>
+
+    <label>ID do Aparelho (Ex: A4F9-88B1-20C4)</label>
+    <input type="text" id="device-id" placeholder="DIGITE O ID DO APARELHO" maxlength="14" />
+
+    <label>Selecione o Plano</label>
+    <div class="plans">
+      <div class="plan active" onclick="selectPlan('6M', 180, this)">
+        <strong>6 Meses</strong>
+        <span>R$ 49,90 • 180 dias</span>
+      </div>
+      <div class="plan" onclick="selectPlan('1Y', 365, this)">
+        <strong>1 Ano</strong>
+        <span>R$ 89,90 • 365 dias</span>
+      </div>
+    </div>
+
+    <button onclick="iniciarPagamento()">Gerar Pix e Liberar Código</button>
+
+    <div id="pix-area" class="result-box">
+      <p style="font-size:13px; color:var(--muted); margin:0;">Chave Pix (Copia e Cola) / Pagamento:</p>
+      <div id="pix-payload" style="font-size:12px; word-break:break-all; background:#151b26; padding:10px; border-radius:6px; margin:10px 0;">
+        CHAVE-PIX-AQUI-OU-LINK-MERCADO-PAGO
+      </div>
+      <p style="font-size:12px; color:#fbbf24;">Após pagar, envie o comprovante ou aguarde a confirmação automática para receber seu código de ativação.</p>
+    </div>
+  </div>
+
+  <!-- PAINEL ADMINISTRATIVO (ADM) -->
+  <div id="admin-view" class="container hidden" style="max-width: 680px;">
+    <div style="text-align:center;"><span class="badge">ACESSO RESTRITO • ADM</span></div>
+    <h2>Painel Gerador de Licenças</h2>
+
+    <div id="login-form">
+      <label>E-mail Administrador</label>
+      <input type="email" id="adm-email" style="text-transform:none;" placeholder="admin@veltplus.com" />
+      <label>Senha</label>
+      <input type="password" id="adm-pass" style="text-transform:none;" placeholder="••••••••" />
+      <button onclick="fazerLogin()">Entrar no Painel</button>
+    </div>
+
+    <div id="dashboard" class="hidden">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div>
+          <label>Plano da Licença</label>
+          <select id="adm-plano">
+            <option value="6M">6 Meses (180 dias)</option>
+            <option value="1Y">1 Ano (365 dias)</option>
+          </select>
+        </div>
+        <div>
+          <label>ID do Aparelho (Opcional/Trava)</label>
+          <input type="text" id="adm-device" placeholder="EX: A4F9-88B1-20C4" />
+        </div>
+      </div>
+      <button onclick="gerarLicencaAdm()" style="background:var(--accent); color:#000;">+ Gerar Novo Código Agora</button>
+
+      <div id="nova-chave-box" class="result-box">
+        <span>Código gerado com sucesso (envie ao cliente):</span>
+        <div id="chave-gerada" class="key-display"></div>
+      </div>
+
+      <h3 style="margin-top:24px; font-size:15px;">Últimas Licenças Geradas</h3>
+      <table>
+        <thead><tr><th>Código</th><th>Plano</th><th>Aparelho</th><th>Status</th></tr></thead>
+        <tbody id="lista-licencas"></tbody>
+      </table>
+      <button class="secondary" onclick="sairAdm()">Sair do Painel</button>
+    </div>
+  </div>
+
+  <div class="nav-toggle" onclick="alternarTela()">Acesso Administrativo</div>
+
+  <!-- SDK FIREBASE (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    // COLE AQUI O SEU FIREBASE CONFIG DO CONSOLE
+   const firebaseConfig = {
+  apiKey: "AIzaSyALwqRngE4Q-KC-HnTyeegr0_TDjFCNPlg",
+  authDomain: "velt-plus.firebaseapp.com",
+  projectId: "velt-plus",
+  storageBucket: "velt-plus.firebasestorage.app",
+  messagingSenderId: "645339836751",
+  appId: "1:645339836751:web:b07f27e8e29839d2bdd53a"
+};
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let planoAtual = { prefixo: '6M', dias: 180 };
+
+    function selectPlan(prefixo, dias, el) {
+      planoAtual = { prefixo, dias };
+      document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function iniciarPagamento() {
+      const devId = document.getElementById('device-id').value.trim().toUpperCase();
+      if (devId.length < 8) return alert("Informe corretamente o ID do Aparelho exibido no aplicativo.");
+      document.getElementById('pix-area').style.display = 'block';
+    }
+
+    function alternarTela() {
+      document.getElementById('public-view').classList.toggle('hidden');
+      document.getElementById('admin-view').classList.toggle('hidden');
+    }
+
+    function fazerLogin() {
+      const email = document.getElementById('adm-email').value;
+      const pass = document.getElementById('adm-pass').value;
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          document.getElementById('login-form').classList.add('hidden');
+          document.getElementById('dashboard').classList.remove('hidden');
+          carregarLicencas();
+        })
+        .catch(err => alert("Erro de acesso: " + err.message));
+    }
+
+    function gerarCodigoAleatorio(prefixo) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const bloco = () => Array.from({length: 4}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+      return `${prefixo}-${bloco()}-${bloco()}`;
+    }
+
+    async function gerarLicencaAdm() {
+      const prefixo = document.getElementById('adm-plano').value;
+      const dias = prefixo === '1Y' ? 365 : 180;
+      const deviceVinculado = document.getElementById('adm-device').value.trim().toUpperCase();
+      const codigo = gerarCodigoAleatorio(prefixo);
+
+      await db.collection('licencas').doc(codigo).set({
+        codigo: codigo,
+        plano: prefixo,
+        dias: dias,
+        device_vinculado: deviceVinculado || null,
+        usado: false,
+        criado_em: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      document.getElementById('chave-gerada').innerText = codigo;
+      document.getElementById('nova-chave-box').style.display = 'block';
+      carregarLicencas();
+    }
+
+    async function carregarLicencas() {
+      const snap = await db.collection('licencas').orderBy('criado_em', 'desc').limit(15).get();
+      const tbody = document.getElementById('lista-licencas');
+      tbody.innerHTML = '';
+      snap.forEach(doc => {
+        const d = doc.data();
+        tbody.innerHTML += `<tr>
+          <td><b>${d.codigo}</b></td>
+          <td>${d.dias}d</td>
+          <td>${d.device_vinculado || 'Livre (1º uso)'}</td>
+          <td style="color:${d.usado ? '#ef4444' : '#00d26a'}">${d.usado ? 'Ativado' : 'Disponível'}</td>
+        </tr>`;
+      });
+    }
+
+    function sairAdm() {
+      auth.signOut();
+      document.getElementById('dashboard').classList.add('hidden');
+      document.getElementById('login-form').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
