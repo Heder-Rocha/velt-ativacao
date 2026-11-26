@@ -3,118 +3,339 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VELT+ | Ativação e Licenças</title>
+  <title>VELT+ | Portal do Cliente, Listas & Ativação</title>
   <style>
-    :root { --bg: #0b0e14; --card: #151b26; --primary: #e50914; --accent: #00d26a; --text: #f1f5f9; --muted: #94a3b8; }
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body { margin: 0; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
-    .container { width: 100%; max-width: 520px; background: var(--card); border-radius: 14px; padding: 28px; box-shadow: 0 12px 30px rgba(0,0,0,0.5); border: 1px solid #242f42; }
-    h1, h2 { margin-top: 0; text-align: center; }
-    .badge { display: inline-block; background: rgba(229,9,20,0.15); color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
-    label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
-    input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #2e3b52; background: #0f141d; color: #fff; font-size: 15px; text-transform: uppercase; }
-    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-    .plan { border: 2px solid #2e3b52; border-radius: 10px; padding: 14px; cursor: pointer; text-align: center; transition: 0.2s; }
-    .plan.active { border-color: var(--primary); background: rgba(229,9,20,0.1); }
-    .plan strong { display: block; font-size: 16px; }
-    .plan span { font-size: 13px; color: var(--accent); font-weight: 600; }
-    button { width: 100%; padding: 14px; margin-top: 20px; border: none; border-radius: 8px; background: var(--primary); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
-    button.secondary { background: #263247; font-size: 14px; padding: 10px; }
-    .result-box { display: none; margin-top: 20px; padding: 16px; background: #0f141d; border: 1px dashed var(--accent); border-radius: 10px; text-align: center; }
-    .key-display { font-size: 22px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin: 10px 0; user-select: all; }
-    .nav-toggle { margin-top: 24px; font-size: 13px; color: var(--muted); cursor: pointer; text-decoration: underline; }
-    .hidden { display: none; }
-    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 12px; }
-    th, td { padding: 8px; border-bottom: 1px solid #242f42; text-align: left; }
+    :root {
+      --bg: #070b14;
+      --card: #0f172a;
+      --card-alt: #162038;
+      --border: #1e293b;
+      --primary: #00d2ff;
+      --primary-dark: #0099cc;
+      --accent: #3b82f6;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    header {
+      background: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+    .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 4px; }
+    .brand span {
+      background: linear-gradient(135deg, #00d2ff, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.85rem;
+      font-weight: 900;
+    }
+    nav { display: flex; gap: 10px; }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover { border-color: var(--primary); color: var(--text); background: rgba(0, 210, 255, 0.08); }
+    main { max-width: 960px; width: 100%; margin: 28px auto; padding: 0 18px; flex: 1; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    h2 { font-size: 1.25rem; margin-bottom: 6px; }
+    p.sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 18px; line-height: 1.45; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 680px) { .grid-2 { grid-template-columns: 1fr; } }
+    label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: #090e1a;
+      color: var(--text);
+      font-size: 0.96rem;
+      margin-bottom: 14px;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: var(--primary); }
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #04101f;
+      font-weight: 800;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-secondary { background: var(--card-alt); color: var(--text); border: 1px solid var(--border); font-weight: 600; }
+    .btn-danger { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .btn-sm { padding: 7px 12px; font-size: 0.82rem; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .badge-ok { background: rgba(16, 185, 129, 0.16); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .badge-exp { background: rgba(239, 68, 68, 0.16); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+    @media (max-width: 600px) { .plans { grid-template-columns: 1fr; } }
+    .plan-box {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .plan-price { font-size: 1.65rem; font-weight: 800; color: var(--primary); margin: 6px 0; }
+    .playlist-item {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .alert { padding: 12px 14px; border-radius: 9px; font-size: 0.9rem; margin-bottom: 14px; display: none; }
+    .alert.show { display: block; }
+    .alert-ok { background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; }
+    .alert-err { background: rgba(239, 68, 68, 0.14); border: 1px solid rgba(239, 68, 68, 0.4); color: #fecaca; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 12px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 600; }
+    code { background: #060a12; padding: 3px 7px; border-radius: 6px; color: var(--primary); font-family: monospace; }
   </style>
 </head>
 <body>
+  <header>
+    <div class="brand"><span>V</span>elt+</div>
+    <nav>
+      <button class="tab-btn active" onclick="switchTab('portal')">Gerenciar Listas & Ativar</button>
+      <button class="tab-btn" onclick="switchTab('admin')">Painel ADM</button>
+    </nav>
+  </header>
 
-  <!-- ÁREA PÚBLICA DO CLIENTE -->
-  <div id="public-view" class="container">
-    <div style="text-align:center;"><span class="badge">PORTAL OFICIAL DE ATIVAÇÃO</span></div>
-    <h1>Ativar VELT+</h1>
-    <p style="color:var(--muted); font-size:14px; text-align:center;">Informe o ID do seu aparelho exibido na aba <b>Sobre</b> do aplicativo.</p>
-
-    <label>ID do Aparelho (Ex: A4F9-88B1-20C4)</label>
-    <input type="text" id="device-id" placeholder="DIGITE O ID DO APARELHO" maxlength="14" />
-
-    <label>Selecione o Plano</label>
-    <div class="plans">
-      <div class="plan active" onclick="selectPlan('6M', 180, this)">
-        <strong>6 Meses</strong>
-        <span>R$ 49,90 • 180 dias</span>
-      </div>
-      <div class="plan" onclick="selectPlan('1Y', 365, this)">
-        <strong>1 Ano</strong>
-        <span>R$ 89,90 • 365 dias</span>
-      </div>
-    </div>
-
-    <button onclick="iniciarPagamento()">Gerar Pix e Liberar Código</button>
-
-    <div id="pix-area" class="result-box">
-      <p style="font-size:13px; color:var(--muted); margin:0;">Chave Pix (Copia e Cola) / Pagamento:</p>
-      <div id="pix-payload" style="font-size:12px; word-break:break-all; background:#151b26; padding:10px; border-radius:6px; margin:10px 0;">
-        CHAVE-PIX-AQUI-OU-LINK-MERCADO-PAGO
-      </div>
-      <p style="font-size:12px; color:#fbbf24;">Após pagar, envie o comprovante ou aguarde a confirmação automática para receber seu código de ativação.</p>
-    </div>
-  </div>
-
-  <!-- PAINEL ADMINISTRATIVO (ADM) -->
-  <div id="admin-view" class="container hidden" style="max-width: 680px;">
-    <div style="text-align:center;"><span class="badge">ACESSO RESTRITO • ADM</span></div>
-    <h2>Painel Gerador de Licenças</h2>
-
-    <div id="login-form">
-      <label>E-mail Administrador</label>
-      <input type="email" id="adm-email" style="text-transform:none;" placeholder="admin@veltplus.com" />
-      <label>Senha</label>
-      <input type="password" id="adm-pass" style="text-transform:none;" placeholder="••••••••" />
-      <button onclick="fazerLogin()">Entrar no Painel</button>
-    </div>
-
-    <div id="dashboard" class="hidden">
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <div>
-          <label>Plano da Licença</label>
-          <select id="adm-plano">
-            <option value="6M">6 Meses (180 dias)</option>
-            <option value="1Y">1 Ano (365 dias)</option>
-          </select>
+  <main>
+    <!-- PORTAL DO CLIENTE -->
+    <section id="tab-portal" class="section active">
+      <div class="card">
+        <h2>Conectar ao Dispositivo</h2>
+        <p class="sub">Informe o <strong>MAC</strong> e a <strong>Chave do Dispositivo</strong> exibidos na tela do seu aplicativo VELT+ para gerenciar suas listas remotamente ou ativar uma licença.</p>
+        <div id="portal-alert" class="alert"></div>
+        <div class="grid-2">
+          <div>
+            <label>Endereço MAC / ID do Aparelho</label>
+            <input type="text" id="input-mac" placeholder="Ex: A4:F9:88:B1:20:C4" />
+          </div>
+          <div>
+            <label>Chave do Dispositivo (6 dígitos)</label>
+            <input type="text" id="input-key" placeholder="Ex: 849201" />
+          </div>
         </div>
-        <div>
-          <label>ID do Aparelho (Opcional/Trava)</label>
-          <input type="text" id="adm-device" placeholder="EX: A4F9-88B1-20C4" />
+        <button class="btn" onclick="conectarDispositivo()">Acessar Meu Dispositivo</button>
+      </div>
+
+      <!-- PAINEL LOGADO DO DISPOSITIVO -->
+      <div id="device-panel" style="display:none;">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h2 id="dev-title">Dispositivo Conectado</h2>
+              <p class="sub" style="margin-bottom:0;" id="dev-status-text">Verificando validade...</p>
+            </div>
+            <span id="dev-badge" class="badge badge-ok">Ativo</span>
+          </div>
+        </div>
+
+        <!-- GERENCIAR LISTAS -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h2>Minhas Listas (Playlists)</h2>
+              <p class="sub" style="margin-bottom:0;">As listas adicionadas aqui aparecem automaticamente no VELT+ apenas pelo nome.</p>
+            </div>
+            <button class="btn btn-sm" onclick="abrirFormLista()">+ Adicionar Nova Lista</button>
+          </div>
+
+          <!-- FORMULÁRIO ADICIONAR / EDITAR LISTA -->
+          <div id="form-lista-box" style="display:none; background:#090e1a; border:1px solid var(--border); border-radius:11px; padding:16px; margin-bottom:16px;">
+            <h3 id="form-lista-titulo" style="font-size:1.05rem; margin-bottom:12px;">Nova Lista</h3>
+            <input type="hidden" id="edit-playlist-id" />
+            <div class="grid-2">
+              <div>
+                <label>Nome da Lista (exibido no App)</label>
+                <input type="text" id="pl-nome" placeholder="Ex: Lista Principal TV" />
+              </div>
+              <div>
+                <label>Tipo de Conexão</label>
+                <select id="pl-tipo" onchange="alternarTipoLista()">
+                  <option value="m3u">Link M3U / M3U8 Completo</option>
+                  <option value="xtream">Xtream Codes (Servidor, Usuário e Senha)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="box-m3u">
+              <label>URL da Lista M3U</label>
+              <input type="url" id="pl-url" placeholder="http://servidor.com/get.php?username=..." />
+            </div>
+
+            <div id="box-xtream" style="display:none;">
+              <div class="grid-2">
+                <div>
+                  <label>URL do Servidor (com http:// e porta)</label>
+                  <input type="url" id="pl-xt-server" placeholder="http://dns.servidor.com:8080" />
+                </div>
+                <div>
+                  <label>Usuário</label>
+                  <input type="text" id="pl-xt-user" placeholder="usuario123" />
+                </div>
+              </div>
+              <label>Senha</label>
+              <input type="text" id="pl-xt-pass" placeholder="senha123" />
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:4px;">
+              <button class="btn" onclick="salvarPlaylist()">Salvar Lista no App</button>
+              <button class="btn btn-secondary" onclick="fecharFormLista()">Cancelar</button>
+            </div>
+          </div>
+
+          <div id="playlists-container"></div>
+        </div>
+
+        <!-- PLANOS & ATIVAÇÃO DE CHAVE -->
+        <div class="card">
+          <h2>Planos e Ativação de Licença</h2>
+          <p class="sub">Adquira um código de ativação ou insira sua chave abaixo para renovar o acesso do dispositivo.</p>
+
+          <div class="plans">
+            <div class="plan-box">
+              <div>
+                <strong>Plano Semestral</strong>
+                <div class="plan-price">R$ 7,99</div>
+                <p class="sub" style="margin-bottom:12px;">180 dias de acesso completo para 1 dispositivo.</p>
+              </div>
+              <span class="badge badge-ok">Prefixo 6M</span>
+            </div>
+            <div class="plan-box">
+              <div>
+                <strong>Plano Anual</strong>
+                <div class="plan-price">R$ 12,49</div>
+                <p class="sub" style="margin-bottom:12px;">365 dias de acesso completo para 1 dispositivo.</p>
+              </div>
+              <span class="badge badge-ok">Prefixo 1Y</span>
+            </div>
+          </div>
+
+          <label>Código de Ativação (6M-... ou 1Y-...)</label>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="text" id="input-license-code" placeholder="Ex: 6M-ABCD-1234" style="flex:1; min-width:220px; margin-bottom:0;" />
+            <button class="btn" onclick="ativarLicenca()">Ativar Código</button>
+          </div>
         </div>
       </div>
-      <button onclick="gerarLicencaAdm()" style="background:var(--accent); color:#000;">+ Gerar Novo Código Agora</button>
+    </section>
 
-      <div id="nova-chave-box" class="result-box">
-        <span>Código gerado com sucesso (envie ao cliente):</span>
-        <div id="chave-gerada" class="key-display"></div>
+    <!-- PAINEL ADMINISTRATIVO -->
+    <section id="tab-admin" class="section">
+      <div id="admin-login-card" class="card" style="max-width:440px; margin:0 auto;">
+        <h2>Acesso Administrativo</h2>
+        <p class="sub">Entre com seu e-mail e senha de administrador do Firebase.</p>
+        <div id="admin-alert" class="alert"></div>
+        <label>E-mail</label>
+        <input type="email" id="adm-email" placeholder="admin@velt.com" />
+        <label>Senha</label>
+        <input type="password" id="adm-pass" placeholder="••••••••" />
+        <button class="btn" style="width:100%;" onclick="loginAdmin()">Entrar no Painel</button>
       </div>
 
-      <h3 style="margin-top:24px; font-size:15px;">Últimas Licenças Geradas</h3>
-      <table>
-        <thead><tr><th>Código</th><th>Plano</th><th>Aparelho</th><th>Status</th></tr></thead>
-        <tbody id="lista-licencas"></tbody>
-      </table>
-      <button class="secondary" onclick="sairAdm()">Sair do Painel</button>
-    </div>
-  </div>
+      <div id="admin-panel" style="display:none;">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+            <div>
+              <h2>Gerador de Chaves de Licença</h2>
+              <p class="sub" style="margin-bottom:0;">Gere códigos únicos de 6 meses (R$ 7,99) ou 1 ano (R$ 12,49).</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="logoutAdmin()">Sair</button>
+          </div>
 
-  <div class="nav-toggle" onclick="alternarTela()">Acesso Administrativo</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+            <button class="btn" onclick="gerarChave('6M', 180, '7.99')">+ Gerar Chave 6 Meses (R$ 7,99)</button>
+            <button class="btn" onclick="gerarChave('1Y', 365, '12.49')">+ Gerar Chave 1 Ano (R$ 12,49)</button>
+          </div>
 
-  <!-- SDK FIREBASE (Compat) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+          <div id="last-generated-box" class="alert alert-ok"></div>
 
-  <script>
-    // COLE AQUI O SEU FIREBASE CONFIG DO CONSOLE
-   const firebaseConfig = {
+          <h3 style="font-size:1rem; margin-top:18px;">Últimas Licenças Geradas</h3>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Plano</th>
+                  <th>Status</th>
+                  <th>Dispositivo</th>
+                </tr>
+              </thead>
+              <tbody id="adm-licenses-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
+      collection, getDocs, addDoc, query, orderBy, limit, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // =========================================================================
+    // SUBSTITUA APENAS O BLOCO ABAIXO PELO SEU firebaseConfig DO FIREBASE CONSOLE
+    // =========================================================================
+    const firebaseConfig = {
   apiKey: "AIzaSyALwqRngE4Q-KC-HnTyeegr0_TDjFCNPlg",
   authDomain: "velt-plus.firebaseapp.com",
   projectId: "velt-plus",
@@ -122,87 +343,309 @@
   messagingSenderId: "645339836751",
   appId: "1:645339836751:web:b07f27e8e29839d2bdd53a"
 };
+    // =========================================================================
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    let planoAtual = { prefixo: '6M', dias: 180 };
+    let currentDeviceId = null;
+    let currentDeviceKey = null;
 
-    function selectPlan(prefixo, dias, el) {
-      planoAtual = { prefixo, dias };
-      document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
+    window.switchTab = (tab) => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      if (tab === 'portal') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('tab-portal').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tab-admin').classList.add('active');
+      }
+    };
+
+    function showAlert(id, msg, ok = true) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = `alert show ${ok ? 'alert-ok' : 'alert-err'}`;
     }
 
-    function iniciarPagamento() {
-      const devId = document.getElementById('device-id').value.trim().toUpperCase();
-      if (devId.length < 8) return alert("Informe corretamente o ID do Aparelho exibido no aplicativo.");
-      document.getElementById('pix-area').style.display = 'block';
+    // Leitura automática de ?mac=...&key=... vindos do QR Code do App
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const mac = params.get('mac');
+      const key = params.get('key');
+      if (mac) document.getElementById('input-mac').value = mac.trim();
+      if (key) document.getElementById('input-key').value = key.trim();
+      if (mac && key) conectarDispositivo();
+    });
+
+    window.conectarDispositivo = async () => {
+      const mac = document.getElementById('input-mac').value.trim().toUpperCase();
+      const key = document.getElementById('input-key').value.trim();
+      if (!mac || !key) return showAlert('portal-alert', 'Preencha o MAC e a Chave do Dispositivo.', false);
+
+      try {
+        const snap = await getDoc(doc(db, 'dispositivos', mac));
+        if (!snap.exists()) {
+          return showAlert('portal-alert', 'Dispositivo não encontrado. Abra o aplicativo VELT+ com internet primeiro.', false);
+        }
+        const data = snap.data();
+        if (String(data.chave_dispositivo || '').trim() !== key) {
+          return showAlert('portal-alert', 'Chave do Dispositivo incorreta para este MAC.', false);
+        }
+
+        currentDeviceId = mac;
+        currentDeviceKey = key;
+        document.getElementById('portal-alert').className = 'alert';
+        document.getElementById('device-panel').style.display = 'block';
+        document.getElementById('dev-title').textContent = `Dispositivo: ${mac}`;
+
+        const expMs = Number(data.expira_em_ms || 0);
+        const now = Date.now();
+        const expDate = new Date(expMs).toLocaleDateString('pt-BR');
+        const badge = document.getElementById('dev-badge');
+
+        if (expMs > now) {
+          const dias = Math.ceil((expMs - now) / 86400000);
+          document.getElementById('dev-status-text').textContent = `Licença válida até ${expDate} (${dias} dia(s) restante(s)).`;
+          badge.textContent = 'Ativo';
+          badge.className = 'badge badge-ok';
+        } else {
+          document.getElementById('dev-status-text').textContent = `Período expirado em ${expDate}. Ative uma licença abaixo para liberar o player.`;
+          badge.textContent = 'Expirado';
+          badge.className = 'badge badge-exp';
+        }
+
+        await carregarPlaylists();
+      } catch (e) {
+        showAlert('portal-alert', 'Erro ao consultar dispositivo: ' + e.message, false);
+      }
+    };
+
+    window.alternarTipoLista = () => {
+      const tipo = document.getElementById('pl-tipo').value;
+      document.getElementById('box-m3u').style.display = tipo === 'm3u' ? 'block' : 'none';
+      document.getElementById('box-xtream').style.display = tipo === 'xtream' ? 'block' : 'none';
+    };
+
+    window.abrirFormLista = (pl = null) => {
+      document.getElementById('form-lista-box').style.display = 'block';
+      if (pl) {
+        document.getElementById('form-lista-titulo').textContent = 'Editar Lista';
+        document.getElementById('edit-playlist-id').value = pl.id;
+        document.getElementById('pl-nome').value = pl.nome || '';
+        document.getElementById('pl-tipo').value = pl.tipo || 'm3u';
+        document.getElementById('pl-url').value = pl.url || '';
+        document.getElementById('pl-xt-server').value = pl.server || '';
+        document.getElementById('pl-xt-user').value = pl.username || '';
+        document.getElementById('pl-xt-pass').value = pl.password || '';
+      } else {
+        document.getElementById('form-lista-titulo').textContent = 'Adicionar Nova Lista';
+        document.getElementById('edit-playlist-id').value = '';
+        document.getElementById('pl-nome').value = '';
+        document.getElementById('pl-tipo').value = 'm3u';
+        document.getElementById('pl-url').value = '';
+        document.getElementById('pl-xt-server').value = '';
+        document.getElementById('pl-xt-user').value = '';
+        document.getElementById('pl-xt-pass').value = '';
+      }
+      alternarTipoLista();
+    };
+
+    window.fecharFormLista = () => {
+      document.getElementById('form-lista-box').style.display = 'none';
+    };
+
+    window.salvarPlaylist = async () => {
+      if (!currentDeviceId) return;
+      const editId = document.getElementById('edit-playlist-id').value;
+      const nome = document.getElementById('pl-nome').value.trim();
+      const tipo = document.getElementById('pl-tipo').value;
+
+      if (!nome) return showAlert('portal-alert', 'Digite o Nome da Lista que aparecerá no aplicativo.', false);
+
+      let payload = {
+        nome,
+        tipo,
+        chave_validacao: currentDeviceKey,
+        atualizado_em_ms: Date.now()
+      };
+
+      if (tipo === 'm3u') {
+        const url = document.getElementById('pl-url').value.trim();
+        if (!url) return showAlert('portal-alert', 'Informe a URL M3U completa.', false);
+        payload.url = url;
+      } else {
+        const server = document.getElementById('pl-xt-server').value.trim().replace(/\/$/, '');
+        const username = document.getElementById('pl-xt-user').value.trim();
+        const password = document.getElementById('pl-xt-pass').value.trim();
+        if (!server || !username || !password) {
+          return showAlert('portal-alert', 'Preencha Servidor, Usuário e Senha do Xtream Codes.', false);
+        }
+        payload.server = server;
+        payload.username = username;
+        payload.password = password;
+        payload.url = `${server}/get.php?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&type=m3u_plus&output=ts`;
+      }
+
+      try {
+        const colRef = collection(db, 'dispositivos', currentDeviceId, 'playlists');
+        if (editId) {
+          await updateDoc(doc(colRef, editId), payload);
+          showAlert('portal-alert', 'Lista atualizada! Reinicie ou atualize o app VELT+ para carregar.', true);
+        } else {
+          payload.ativa = true;
+          await addDoc(colRef, payload);
+          showAlert('portal-alert', 'Lista adicionada com sucesso ao seu dispositivo!', true);
+        }
+        fecharFormLista();
+        await carregarPlaylists();
+      } catch (e) {
+        showAlert('portal-alert', 'Erro ao salvar lista: ' + e.message, false);
+      }
+    };
+
+    async function carregarPlaylists() {
+      const container = document.getElementById('playlists-container');
+      container.innerHTML = '<p class="sub">Carregando listas...</p>';
+      const snap = await getDocs(collection(db, 'dispositivos', currentDeviceId, 'playlists'));
+      if (snap.empty) {
+        container.innerHTML = '<p class="sub">Nenhuma lista cadastrada neste dispositivo. Clique em "+ Adicionar Nova Lista".</p>';
+        return;
+      }
+      container.innerHTML = '';
+      snap.forEach((docSnap) => {
+        const pl = { id: docSnap.id, ...docSnap.data() };
+        const div = document.createElement('div');
+        div.className = 'playlist-item';
+        div.innerHTML = `
+          <div>
+            <strong>${pl.nome}</strong>
+            <div style="font-size:0.8rem; color:var(--muted); margin-top:3px;">
+              Formato: ${pl.tipo === 'xtream' ? 'Xtream Codes' : 'M3U URL'} • Sincronizada com o App
+            </div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-secondary btn-sm" id="edit-${pl.id}">Editar</button>
+            <button class="btn btn-danger btn-sm" id="del-${pl.id}">Excluir</button>
+          </div>
+        `;
+        container.appendChild(div);
+        document.getElementById(`edit-${pl.id}`).onclick = () => abrirFormLista(pl);
+        document.getElementById(`del-${pl.id}`).onclick = () => excluirPlaylist(pl.id, pl.nome);
+      });
     }
 
-    function alternarTela() {
-      document.getElementById('public-view').classList.toggle('hidden');
-      document.getElementById('admin-view').classList.toggle('hidden');
-    }
+    window.excluirPlaylist = async (id, nome) => {
+      if (!confirm(`Deseja realmente excluir a lista "${nome}" deste aparelho?`)) return;
+      try {
+        await deleteDoc(doc(db, 'dispositivos', currentDeviceId, 'playlists', id));
+        showAlert('portal-alert', `Lista "${nome}" removida com sucesso.`, true);
+        await carregarPlaylists();
+      } catch (e) {
+        showAlert('portal-alert', 'Erro ao excluir lista: ' + e.message, false);
+      }
+    };
 
-    function fazerLogin() {
-      const email = document.getElementById('adm-email').value;
+    window.ativarLicenca = async () => {
+      if (!currentDeviceId) return;
+      const code = document.getElementById('input-license-code').value.trim().toUpperCase();
+      if (!code) return showAlert('portal-alert', 'Digite um código de ativação válido.', false);
+
+      try {
+        const licRef = doc(db, 'licencas', code);
+        const licSnap = await getDoc(licRef);
+        if (!licSnap.exists()) return showAlert('portal-alert', 'Código de ativação inexistente.', false);
+
+        const lic = licSnap.data();
+        if (lic.usado === true) return showAlert('portal-alert', 'Este código já foi utilizado em outro dispositivo.', false);
+
+        const dias = Number(lic.dias || (code.startsWith('1Y') ? 365 : 180));
+        const novoExpMs = Date.now() + (dias * 86400000);
+
+        await updateDoc(licRef, {
+          usado: true,
+          device_vinculado: currentDeviceId,
+          ativado_em: serverTimestamp()
+        });
+
+        await updateDoc(doc(db, 'dispositivos', currentDeviceId), {
+          device_id: currentDeviceId,
+          expira_em_ms: novoExpMs
+        });
+
+        document.getElementById('input-license-code').value = '';
+        showAlert('portal-alert', `Licença ativada com sucesso! Adicionados ${dias} dias de acesso.`, true);
+        await conectarDispositivo();
+      } catch (e) {
+        showAlert('portal-alert', 'Falha na ativação: ' + e.message, false);
+      }
+    };
+
+    // ================= PAINEL ADMINISTRATIVO =================
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('admin-login-card').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        carregarLicencasAdmin();
+      } else {
+        document.getElementById('admin-login-card').style.display = 'block';
+        document.getElementById('admin-panel').style.display = 'none';
+      }
+    });
+
+    window.loginAdmin = async () => {
+      const email = document.getElementById('adm-email').value.trim();
       const pass = document.getElementById('adm-pass').value;
-      auth.signInWithEmailAndPassword(email, pass)
-        .then(() => {
-          document.getElementById('login-form').classList.add('hidden');
-          document.getElementById('dashboard').classList.remove('hidden');
-          carregarLicencas();
-        })
-        .catch(err => alert("Erro de acesso: " + err.message));
-    }
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+      } catch (e) {
+        showAlert('admin-alert', 'E-mail ou senha inválidos.', false);
+      }
+    };
 
-    function gerarCodigoAleatorio(prefixo) {
+    window.logoutAdmin = () => signOut(auth);
+
+    window.gerarChave = async (prefixo, dias, valor) => {
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      const bloco = () => Array.from({length: 4}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-      return `${prefixo}-${bloco()}-${bloco()}`;
-    }
+      const rand = (n) => Array.from({ length: n }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+      const codigo = `${prefixo}-${rand(4)}-${rand(4)}`;
 
-    async function gerarLicencaAdm() {
-      const prefixo = document.getElementById('adm-plano').value;
-      const dias = prefixo === '1Y' ? 365 : 180;
-      const deviceVinculado = document.getElementById('adm-device').value.trim().toUpperCase();
-      const codigo = gerarCodigoAleatorio(prefixo);
+      try {
+        await setDoc(doc(db, 'licencas', codigo), {
+          codigo,
+          plano: prefixo === '1Y' ? '1 Ano (R$ 12,49)' : '6 Meses (R$ 7,99)',
+          dias,
+          valor,
+          usado: false,
+          device_vinculado: null,
+          criado_em: serverTimestamp()
+        });
+        showAlert('last-generated-box', `Chave gerada com sucesso: ${codigo} (${dias} dias - R$ ${valor})`, true);
+        await carregarLicencasAdmin();
+      } catch (e) {
+        alert('Erro ao gerar chave: ' + e.message);
+      }
+    };
 
-      await db.collection('licencas').doc(codigo).set({
-        codigo: codigo,
-        plano: prefixo,
-        dias: dias,
-        device_vinculado: deviceVinculado || null,
-        usado: false,
-        criado_em: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      document.getElementById('chave-gerada').innerText = codigo;
-      document.getElementById('nova-chave-box').style.display = 'block';
-      carregarLicencas();
-    }
-
-    async function carregarLicencas() {
-      const snap = await db.collection('licencas').orderBy('criado_em', 'desc').limit(15).get();
-      const tbody = document.getElementById('lista-licencas');
+    async function carregarLicencasAdmin() {
+      const tbody = document.getElementById('adm-licenses-tbody');
+      tbody.innerHTML = '<tr><td colspan="4">Carregando...</td></tr>';
+      const q = query(collection(db, 'licencas'), orderBy('criado_em', 'desc'), limit(20));
+      const snap = await getDocs(q);
       tbody.innerHTML = '';
-      snap.forEach(doc => {
-        const d = doc.data();
-        tbody.innerHTML += `<tr>
-          <td><b>${d.codigo}</b></td>
-          <td>${d.dias}d</td>
-          <td>${d.device_vinculado || 'Livre (1º uso)'}</td>
-          <td style="color:${d.usado ? '#ef4444' : '#00d26a'}">${d.usado ? 'Ativado' : 'Disponível'}</td>
-        </tr>`;
+      snap.forEach((d) => {
+        const item = d.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><code>${item.codigo}</code></td>
+          <td>${item.plano || (item.dias + ' dias')}</td>
+          <td><span class="badge ${item.usado ? 'badge-exp' : 'badge-ok'}">${item.usado ? 'Ativado' : 'Disponível'}</span></td>
+          <td>${item.device_vinculado || '—'}</td>
+        `;
+        tbody.appendChild(tr);
       });
-    }
-
-    function sairAdm() {
-      auth.signOut();
-      document.getElementById('dashboard').classList.add('hidden');
-      document.getElementById('login-form').classList.remove('hidden');
     }
   </script>
 </body>
